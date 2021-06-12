@@ -12,7 +12,14 @@ const emailExists = async (email) => {
   if (emailFound) return true;
 };
 
+const userLogin = async (email) => {
+  const userLog = await connection()
+    .then((db) => db.collection('users').findOne({ email }));
+  return userLog;
+};
+
 module.exports = {
   addUser,
-  emailExists
+  emailExists,
+  userLogin
 };

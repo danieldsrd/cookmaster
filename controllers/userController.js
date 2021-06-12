@@ -1,10 +1,8 @@
-const express = require('express');
-const router = express.Router();
 const userValidate = require('../services/userValidate');
 
 const ERROR = 500;
 
-router.post('/', async (req, res) => {
+const addUser = async (req, res) => {
   const { name, email, password } = req.body;
   const role = 'user';
   try {
@@ -17,6 +15,6 @@ router.post('/', async (req, res) => {
   } catch (err) {
     res.status(ERROR).send({ message: 'Error adding user' });
   }
-});
+};
 
-module.exports = router;
+module.exports = { addUser };
