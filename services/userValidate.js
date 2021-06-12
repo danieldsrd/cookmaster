@@ -30,13 +30,8 @@ const userLogin = async (email, password) => {
   if (!email || !password) return {
     code: 401, message: 'All fields must be filled'
   };
-  const bool = validateEmail(email);
-  console.log('BOLEANO', bool);
-  if (!validateEmail(email)) return {
-    code: 401, message: 'Incorrect username or password'
-  };
   const result = await userModel.userLogin(email);
-  if (result.password !== password) return ({
+  if (!result || result.password !== password) return ({
     code: 401, message: 'Incorrect username or password'
   });
 
