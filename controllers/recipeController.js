@@ -14,4 +14,31 @@ const addRecipe = async (req, res) => {
   }
 };
 
-module.exports = { addRecipe };
+const getAllRecipes = async (req, res) => {
+  try {
+    const { code, result } = await recipeValidate.getAllRecipes();
+    return res.status(code).json(result);
+  } catch (err) {
+    res.status(ERROR).send({ message: 'Error get recipes' });
+  }
+};
+
+const getRecipeById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { code, message, result } = await recipeValidate.getRecipeById(id);
+    if (!result) {
+      return res.status(code).json({ message });
+    }
+    console.log(result);
+    return res.status(code).json(result);
+  } catch (e) {
+    res.status(ERROR).send({ message: 'Error get recipes' });
+  }
+};
+
+module.exports = { 
+  addRecipe,
+  getAllRecipes,
+  getRecipeById
+};

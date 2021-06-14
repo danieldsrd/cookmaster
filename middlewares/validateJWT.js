@@ -13,7 +13,7 @@ const validateJWT = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, secret);
     const user = await userLogin(decoded.email);
-    console.log(user);
+    
     if (!user) return res.status(STATUS_ERROR).json(
       { message: 'User dont exists.' }
     );
