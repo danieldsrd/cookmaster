@@ -49,7 +49,17 @@ const updateRecipeById = async (req, res) => {
     console.log(result);
     return res.status(code).json(result);
   } catch (e) {
-    res.status(ERROR).send({ message: 'Error get recipes' });
+    res.status(ERROR).send({ message: 'Error get recipe by id' });
+  }
+};
+
+const deleteRecipeById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { code, message, result } = await recipeValidate.deleteRecipeById(id);
+    return res.status(code).json();
+  } catch (e) {
+    res.status(ERROR).send({ message: 'Error to delete recipe by id'});
   }
 };
 
@@ -57,5 +67,6 @@ module.exports = {
   addRecipe,
   getAllRecipes,
   getRecipeById,
-  updateRecipeById
+  updateRecipeById,
+  deleteRecipeById
 };

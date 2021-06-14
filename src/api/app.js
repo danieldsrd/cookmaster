@@ -6,7 +6,8 @@ const {
   addRecipe, 
   getAllRecipes, 
   getRecipeById,
-  updateRecipeById
+  updateRecipeById,
+  deleteRecipeById
 } = require('../../controllers/recipeController');
 const { validateJWT } = require('../../middlewares/validateJWT');
 
@@ -26,5 +27,6 @@ app.post('/recipes', validateJWT, addRecipe);
 app.get('/recipes', getAllRecipes);
 app.get('/recipes/:id', getRecipeById);
 app.put('/recipes/:id', validateJWT, updateRecipeById);
+app.delete('/recipes/:id', validateJWT, deleteRecipeById);
 
 module.exports = app;
