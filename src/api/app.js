@@ -7,9 +7,13 @@ const {
   getAllRecipes, 
   getRecipeById,
   updateRecipeById,
-  deleteRecipeById
+  deleteRecipeById,
+  uploadImageById,
+  getImage
 } = require('../../controllers/recipeController');
 const { validateJWT } = require('../../middlewares/validateJWT');
+const uploadFile = require('../../middlewares/uploadFile');
+const { resolve } = require('path');
 
 const app = express();
 
@@ -20,6 +24,7 @@ app.get('/', (request, response) => {
   response.send();
 });
 // Não remover esse end-point, ele é necessário para o avaliador
+const uploadPath = resolve(__dirname, '..', 'uploads');
 
 app.post('/users', addUser);
 app.post('/login', userLogin);
@@ -28,5 +33,8 @@ app.get('/recipes', getAllRecipes);
 app.get('/recipes/:id', getRecipeById);
 app.put('/recipes/:id', validateJWT, updateRecipeById);
 app.delete('/recipes/:id', validateJWT, deleteRecipeById);
+app.put('/recipes/:id/image', validateJWT, uploadFile(uploadPath), uploadImageById);
+app.get('/images/:filename', getImage);
+
 
 module.exports = app;

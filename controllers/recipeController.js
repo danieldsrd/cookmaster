@@ -1,5 +1,7 @@
 const recipeValidate = require('../services/recipeValidate');
 const ERROR = 500;
+const STATUS_OK = 200;
+const { resolve } = require('path');
 
 const addRecipe = async (req, res) => {
   const { name, ingredients, preparation } = req.body;
@@ -14,7 +16,7 @@ const addRecipe = async (req, res) => {
   }
 };
 
-const getAllRecipes = async (req, res) => {
+const getAllRecipes = async (_req, res) => {
   try {
     const { code, result } = await recipeValidate.getAllRecipes();
     return res.status(code).json(result);
@@ -30,7 +32,6 @@ const getRecipeById = async (req, res) => {
     if (!result) {
       return res.status(code).json({ message });
     }
-    console.log(result);
     return res.status(code).json(result);
   } catch (e) {
     res.status(ERROR).send({ message: 'Error get recipes' });
@@ -46,7 +47,6 @@ const updateRecipeById = async (req, res) => {
     if (!result) {
       return res.status(code).json({ message });
     }
-    console.log(result);
     return res.status(code).json(result);
   } catch (e) {
     res.status(ERROR).send({ message: 'Error get recipe by id' });
@@ -56,10 +56,32 @@ const updateRecipeById = async (req, res) => {
 const deleteRecipeById = async (req, res) => {
   const { id } = req.params;
   try {
-    const { code, message, result } = await recipeValidate.deleteRecipeById(id);
+    const { code } = await recipeValidate.deleteRecipeById(id);
     return res.status(code).json();
   } catch (e) {
     res.status(ERROR).send({ message: 'Error to delete recipe by id'});
+  }
+};
+
+const uploadImageById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { filename } = req.file;
+    const imagePath = `localhost:3000/src/uploads/${filename}`;
+    const { code, result } = await recipeValidate.uploadImage(id, imagePath);
+    return res.status(code).json(result);
+  } catch (e) {
+    res.status(ERROR).send({ message: 'Error to find id'});
+  }
+};
+
+const getImage = async (req, res) => {
+  const { filename } = req.params;
+  const filePath = resolve( 'src/uploads', filename);
+  try {
+    return res.status(STATUS_OK).sendFile(filePath);
+  } catch (e) {
+    res.status(ERROR).send({ message: 'Error to image'});
   }
 };
 
@@ -68,5 +90,7 @@ module.exports = {
   getAllRecipes,
   getRecipeById,
   updateRecipeById,
-  deleteRecipeById
+  deleteRecipeById,
+  uploadImageById,
+  getImage
 };
