@@ -21,8 +21,17 @@ const getRecipeById = async (id) => {
   return { code: 200, result };
 };
 
+const updateRecipeById = async (id, name, ingredients, preparation) => {
+  const result = await recipeModel.updateRecipeById(id, name, ingredients, preparation);
+  if (!result) {
+    return { code: 404, message: 'recipe not found' };
+  }
+  return { code: 200, result };
+};
+
 module.exports = {
   addRecipe,
   getAllRecipes,
-  getRecipeById
+  getRecipeById,
+  updateRecipeById
 };

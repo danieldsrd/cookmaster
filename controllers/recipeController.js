@@ -37,8 +37,25 @@ const getRecipeById = async (req, res) => {
   }
 };
 
+const updateRecipeById = async (req, res) => {
+  const { id } = req.params;
+  const { name, ingredients, preparation } = req.body;
+  try {
+    const { code, message, result } = 
+      await recipeValidate.updateRecipeById(id, name, ingredients, preparation);
+    if (!result) {
+      return res.status(code).json({ message });
+    }
+    console.log(result);
+    return res.status(code).json(result);
+  } catch (e) {
+    res.status(ERROR).send({ message: 'Error get recipes' });
+  }
+};
+
 module.exports = { 
   addRecipe,
   getAllRecipes,
-  getRecipeById
+  getRecipeById,
+  updateRecipeById
 };

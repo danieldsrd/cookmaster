@@ -8,7 +8,7 @@ const validateJWT = async (req, res, next) => {
   const token = req.headers.authorization;
 
   if(!token) {
-    return res.status(STATUS_ERROR).json({ message: 'token dont exists'});
+    return res.status(STATUS_ERROR).json({ message: 'missing auth token'});
   }
   try {
     const decoded = jwt.verify(token, secret);

@@ -5,8 +5,9 @@ const { userLogin } = require('../../controllers/loginController');
 const { 
   addRecipe, 
   getAllRecipes, 
-  getRecipeById } 
-  = require('../../controllers/recipeController');
+  getRecipeById,
+  updateRecipeById
+} = require('../../controllers/recipeController');
 const { validateJWT } = require('../../middlewares/validateJWT');
 
 const app = express();
@@ -24,5 +25,6 @@ app.post('/login', userLogin);
 app.post('/recipes', validateJWT, addRecipe);
 app.get('/recipes', getAllRecipes);
 app.get('/recipes/:id', getRecipeById);
+app.put('/recipes/:id', validateJWT, updateRecipeById);
 
 module.exports = app;
