@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { addUser } = require('../../controllers/userController');
+const { addUser, userAdmin } = require('../../controllers/userController');
 const { userLogin } = require('../../controllers/loginController');
 const { 
   addRecipe, 
@@ -35,6 +35,8 @@ app.put('/recipes/:id', validateJWT, updateRecipeById);
 app.delete('/recipes/:id', validateJWT, deleteRecipeById);
 app.put('/recipes/:id/image', validateJWT, uploadFile(uploadPath), uploadImageById);
 app.get('/images/:filename', getImage);
+app.post('/users/admin', validateJWT, userAdmin);
+
 
 
 module.exports = app;

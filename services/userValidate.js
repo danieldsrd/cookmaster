@@ -40,7 +40,24 @@ const userLogin = async (email, password) => {
   return { code: 200, token };
 };
 
+const addAdmin = async (name, email, password, role) => {
+  if (!name || !email || !password || !validateEmail(email)) {
+    return { code: 400, message: 'Invalid entries. Try again.' };
+  }
+  const emailExists = await userModel.emailExists(email);
+  if (emailExists) {
+    return { code: 409, message: 'Email already registered' };
+  }
+  if (role !== 'admin') {
+    return { code: 403, message: 'Only admins can register new admins'};
+  }
+  const result = await userModel.addUser(name, email, password, role);
+  
+  return { code: 201, result };
+};
+
 module.exports = {
   addUser,
-  userLogin
+  userLogin,
+  addAdmin
 };
